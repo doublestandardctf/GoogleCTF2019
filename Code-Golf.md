@@ -255,7 +255,7 @@ Haskell has a lot of infix operators (operators like `+` or `-` that go between
 their arguments). It's made fun of in this 
 [article](http://uncyclopedia.wikia.com/wiki/Haskell)
 (warning: somewhat NSFW language), which includes the following code that produces
-an infinite list of powers of 2. 
+[an infinite list of powers of 2](https://stackoverflow.com/questions/12659951/how-does-this-piece-of-obfuscated-haskell-code-work/12660526#12660526). 
 
 ```haskell
 import Data.Function (fix)
