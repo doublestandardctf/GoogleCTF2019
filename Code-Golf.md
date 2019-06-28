@@ -443,7 +443,11 @@ get optimal would be space. I eventually sat down and proved it NP-Complete.
 
 ## Proof
 The proof is by reduction from the 
-[Bin Packing Problem](https://en.wikipedia.org/wiki/Bin_packing_problem) (BPP).
+[Bin Packing Problem](https://en.wikipedia.org/wiki/Bin_packing_problem) (BPP). This is
+a pretty rigorous proof, but I tried to make it understandable. I think the 
+[Reduction, visualized](#Reduction-visualized)
+section does a pretty good job of building intuition for how the proof works, but if you
+haven't seen a reduction before this all might seem kind of obtuse.
 
 ### Bin Packing Problem (decision version)
 The BPP asks, given `m` bins of size `V` and a set `S` of elements with an associated
