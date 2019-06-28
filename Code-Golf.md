@@ -3,11 +3,11 @@
 
 ## Index
 * [Acknowledgements](#Acknowledgements)
-* The problem
-  * [Problem statement](#The-problem)
+* [The problem](#The-problem)
+  * [Problem statement](#Problem-statement)
   * [Some background](#Some-background)
   * [Lessons](#Lessons)
-* The solution
+* [The solution](#The-solution)
   * [A first pass](#A-first-pass)
   * [The first correct code](#The-first-correct-code)
   * [More compact code](#More-compact-code)
@@ -23,8 +23,18 @@ I'd like to thank Kye Shi for his help designing a faster algorithm,
 and Giselle Serate for algorithm verification and actually running the code. Also for
 showing me the CTF.
 
-## The problem
+# The problem
 
+As a foreward/warning, this is a lengthy writeup. If you want the TL;DR highlights , 
+first read the [problem statement](#Problem-statement) if you aren't familiar with the problem.
+I think the most interesting highlights are the
+[golfing tips](#Golf-you-a-Haskell), specifically [this one](#Finding-the-possible-shifts), and
+the [NP-Completeness proof](#NP-Completeness).
+
+Or just skim the titles and skim/read what is interesting. A lot of the length comes from headers,
+newlines, and code blocks - as far as text goes I've tried to edit things so they're to-the-point.
+
+## Problem statement
 The problem could be found [here](https://capturetheflag.withgoogle.com/#challenges/)
 as of 6/27/19. In case it gets moved or taken down, I've described it below.
 
@@ -93,6 +103,8 @@ this was fixed and it was golfed, we learned much to my chagrin that it used too
 much memory and was silently failing. Soooooo ... we had to come up with a new one
 from scratch. And then golf it again. Did I mention that I spent a lot of time
 on this problem?
+
+# The solution
 
 ## A first pass
 
@@ -245,12 +257,12 @@ time/space restrictions given upfront on the Code Golf Stack Exchange, where the
 can be answers that are right by observation but too inefficient to run anything but
 the simplest of test cases.
 
-## Golf you a Haskell
+# Golf you a Haskell
 Here were some of the more inventive or useful golfing transformations I used. Since
 I foolishly neglected to use any resources other than the documentation, 
 these were all found by myself.
 
-### Infix your code!
+## Infix your code!
 Haskell has a lot of infix operators (operators like `+` or `-` that go between
 their arguments). It's made fun of in this 
 [article](http://uncyclopedia.wikia.com/wiki/Haskell)
@@ -265,7 +277,7 @@ fix$(<$>)<$>(:)<*>((<$>((:[])<$>))(=<<)<$>(*)<$>(*2))$1
 
 The next few points are on how you can use these operators.
 
-#### `$`
+### `$`
 A simple transformation that I often use in code read by people other than myself
 is `$`. `$` is a function that just applies its left argument to its right argument.
 
@@ -281,27 +293,27 @@ gcd (1+2)  (3*4)
 gcd (1+2) $ 3*4
 ```
 
-#### `map`
+### `map`
 `<$>` and `map` are the same for lists, but the former has lower priority, which lets
 you reap some of the benefits of `$`, while also not needing a space between its
 arguments (unlike `map`).
 
-#### `concatMap`
+### `concatMap`
 I found myself often using `concatMap`. I first reduced this to `foldMap`, 
 and then to the infix `=<<`. All of these have the same definition for lists.
 
-#### `return`
+### `return`
 I used `return` to convert an element `x` to a singleton list. 
 This becaume `pure` and then finally `[x]` once I realized I was being a moron.
 
-### Filling holes
+## Filling holes
 A tricky part of this problem was combining two strings with holes (spaces) in them
 to produce one where the holes were filled. As it turns out, the only printable ASCII
 less than space (ASCII 32) is whitespace, so I figured these wouldn't show up in the
 strings. Thus, given two chars in the same column, we can take their maximum to find
 the non-space char (if it exists).
 
-### Cheeky pattern matching
+## Cheeky pattern matching
 I had code that I wanted to give a list if `x` pattern matched one thing and the empty
 list if it did not. Something that looked like
 
@@ -323,7 +335,7 @@ case of how pattern matching is desugared inside of a `do` block.
 
 N.B. `foo` has a different type between these examples.
 
-### Finding the possible shifts
+## Finding the possible shifts
 Given `strings :: [String]`, I wanted to find all of the ways these strings could be
 shifted. I eventually boiled this down to finding `paddings ::[[String]]`, where each
 `padding :: [String]` in the list was the same length as `strings` and had a varied
@@ -421,7 +433,7 @@ paddings strings = forM[ (>> " ") =<< strings | _ <- strings] inits
 
 Don't you love code golfing?
 
-## NP Completeness
+# NP Completeness
 
 On Saturday evening, I was banging my head against a wall trying to optimize the
 space and time complexity of my algorithm. But every time I tried to think through
@@ -429,18 +441,18 @@ a faster algorithm, something felt wrong. I had a feeling that the problem was
 [NP Complete](https://en.wikipedia.org/wiki/NP-complete), and so the only thing I could 
 get optimal would be space. I eventually sat down and proved it NP-Complete.
 
-### Proof
+## Proof
 The proof is by reduction from the 
 [Bin Packing Problem](https://en.wikipedia.org/wiki/Bin_packing_problem) (BPP).
 
-#### Bin Packing Problem (decision version)
+### Bin Packing Problem (decision version)
 The BPP asks, given `m` bins of size `V` and a set `S` of elements with an associated
 cost function `f : S -> N` (where `N` is the natural numbers), can `S` be partitioned
 into at most `m` subsets, each of whose total cost is less than or equal to `V`? In
 plain English, given `m` bins, each with capacity `V`, can we fill each bin to at
 most capacity with all of the elements in `S`?
 
-#### Crypto Problem (decision version)
+### Crypto Problem (decision version)
 First, I will state the decision variant of the Crypto Problem (CP). Given a "set" `T`
 of strings that have holes in them represented by spaces and a target length `l`, the
 Crypto Problem asks whether all elements of `T` can be overlaid such that there is at
@@ -449,7 +461,7 @@ trailing and leading spaces) is `l` or less.
 
 (this "set" may have duplicates - I don't want to be as rigorous as in the BPP) 
 
-#### Reduction
+### Reduction
 We can construct a CP from an arbitrary BPP as follows.
 
 We first will construct the
@@ -525,7 +537,7 @@ which, when flattened looks like
 
 Note how the length is `(3V + 2) * m` = 33.
 
-#### Reduction proof (forward direction)
+### Reduction proof (forward direction)
 
 Given a solution to the BPP, we can make a solution to the CP. Suppose in the BPP
 solution that some arbitrary bin `B` was filled to a volume `V' <= V` using the
@@ -551,7 +563,7 @@ there exists a solution where we place all of the `*` strings inside of the bin
 strings. Therefore, the overall length of this solution is just the length of all the
 bin strings combined, which is `(3V + 2) * m` as desired.
 
-#### Reduction proof (backwards direction)
+### Reduction proof (backwards direction)
 
 We'll prove the contrapositve of the backwards direction. If there doesn't exist
 a solution to the BPP, we cannot make a solution to the CP.
@@ -579,7 +591,7 @@ The bins all have to intersect in _some_ column, which is not allowed in an answ
 
 Therefore, it is impossible to have a solution to the CP.
 
-#### Conclusion
+### Conclusion
 
 Since we showed a reduction existed from the BPP to the CP that took polynomial time,
 and that the constructed CP was solvable if and only if the corresponding BPP was,
