@@ -30,7 +30,7 @@ as of 6/27/19. In case it gets moved or taken down, I've described it below.
 
 Given a list of strings with gaps in them (denoted by a space), you're asked to combine them into
 a single string. Imagine all of the strings stacked on top of each other. You want to shift the strings
-to the left so that only one or zero characters are in each position. You're tasked with minimizing the
+to the so that only one or zero characters are in each position. You're tasked with minimizing the
 length of the resulting string (ignoring trailing and leading gaps). The tie-breaker for multiple
 solutions is lexicographic length. Your solution is a function `g :: [String] -> String`.
 
