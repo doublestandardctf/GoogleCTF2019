@@ -3,13 +3,15 @@
 
 ## Index
 * [Acknowledgements](#Acknowledgements)
-* [The problem](#The-problem)
-* [Some background](#Some-background)
-* [Lessons](#Lessons)
-* [A first pass](#A-first-pass)
-* [The first correct code](#The-first-correct-code)
-* [More compact code](#More-compact-code)
-* [The first accepted code](#The-first-accepted-code)
+* The problem
+  * [Problem statement](#The-problem)
+  * [Some background](#Some-background)
+  * [Lessons](#Lessons)
+* The solution
+  * [A first pass](#A-first-pass)
+  * [The first correct code](#The-first-correct-code)
+  * [More compact code](#More-compact-code)
+  * [The first accepted code](#The-first-accepted-code)
 * [Golfing transformations](#Golf-you-a-Haskell)
 * [NP-Completeness](#NP-Completeness)
 
